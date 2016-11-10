@@ -25,7 +25,6 @@ $(document).ready(function() {
 
     // pass `allTodos` into the template function
     var todosHtml = template({ todos: allTodos });
-
     // append html to the view
     $todosList.append(todosHtml);
   };
@@ -35,11 +34,10 @@ $(document).ready(function() {
     method: "GET",
     url: baseUrl,
     success: function onIndexSuccess(json) {
-      console.log(json);
 
       // set `allTodos` to todo data (json.data) from API
       allTodos = json.todos;
-
+      console.log(allTodos);
       // render all todos to view
       render();
     }
@@ -47,8 +45,8 @@ $(document).ready(function() {
 
   // listen for submit even on form
   $createTodo.on('submit', function (event) {
-    event.preventDefault();
-
+    console.log("form submitted!")
+    //event.preventDefault();
     // serialze form data
     var newTodo = $(this).serialize();
 
@@ -58,10 +56,9 @@ $(document).ready(function() {
       url: baseUrl,
       data: newTodo,
       success: function onCreateSuccess(json) {
-        console.log(json);
 
         // add new todo to `allTodos`
-        allTodos.push(json);
+        allTodos.push(todos.json);
 
         // render all todos to view
         render();
@@ -88,6 +85,8 @@ $(document).ready(function() {
         return todo._id == todoId;
       });
 
+      console.log(allTodos.indexOf(todoToUpdate))
+
       // serialze form data
       var updatedTodo = $(this).serialize();
 
@@ -99,7 +98,7 @@ $(document).ready(function() {
         success: function onUpdateSuccess(json) {
           // replace todo to update with newly updated version (json)
           allTodos.splice(allTodos.indexOf(todoToUpdate), 1, json);
-
+          console.log(allTodos.splice(allTodos.indexOf(todoToUpdate), 1, json));
           // render all todos to view
           render();
         }
@@ -108,8 +107,7 @@ $(document).ready(function() {
 
     // for delete: click event on `.delete-todo` button
     .on('click', '.delete-todo', function (event) {
-      event.preventDefault();
-
+      //event.preventDefault();
       // find the todo's id (stored in HTML as `data-id`)
       var todoId = $(this).closest('.todo').attr('data-id');
 
